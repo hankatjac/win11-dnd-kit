@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+
+body {
+  background-image: url("https://images5.alphacoders.com/115/1159855.jpg");
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-size: cover;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
