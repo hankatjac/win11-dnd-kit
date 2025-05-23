@@ -1,11 +1,8 @@
 import React, { useRef, useCallback, useState } from "react";
 import { DndContext } from "@dnd-kit/core";
-import { useParams } from "react-router-dom";
-import { generateInitials } from "../user/UserProfile";
+import { useInitials } from "../user/UserProfile";
 import RightClick from "../utilities/RightClick";
 import DraggableWindow from "../utilities/DraggableWindow";
-
-
 
 const TitleBar = ({ toggleBrowser }) => (
   <div className="title-bar">
@@ -32,46 +29,45 @@ const TitleBar = ({ toggleBrowser }) => (
   </div>
 );
 
-const AddressBar = ({ name }) => (
-  <div className="flex bg-neutral-800 w-full h-10 border-neutral-700 border-b-[1.5px] mt-1">
-    <div className="flex py-1 w-28 justify-around">
-      <div className="material-symbols-outlined font-extralight text-xl opacity-45">
-        arrow_back
+const AddressBar = () => {
+  const initials = useInitials();
+  return (
+    <div className="flex bg-neutral-800 w-full h-10 border-neutral-700 border-b-[1.5px] mt-1">
+      <div className="flex py-1 w-28 justify-around">
+        <div className="material-symbols-outlined font-extralight text-xl opacity-45">
+          arrow_back
+        </div>
+        <div className="material-symbols-outlined font-extralight text-xl opacity-45">
+          arrow_forward
+        </div>
+        <div className="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-xl hover:bg-opacity-50">
+          refresh
+        </div>
       </div>
-      <div className="material-symbols-outlined font-extralight text-xl opacity-45">
-        arrow_forward
+      <div className="w-[48vw] my-1.5 rounded-xl bg-neutral-700 relative">
+        <div className="opacity-50 text-left pl-3 flex items-center h-full">
+          <span className="material-symbols-outlined text-[20px] pr-3">
+            search
+          </span>
+          Search Google or type a URL
+        </div>
+        <div className="absolute right-2 top-0 text-lg opacity-80 material-symbols-outlined">
+          star
+        </div>
       </div>
-      <div className="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-xl hover:bg-opacity-50">
-        refresh
+      <div className="avatar placeholder flex justify-center items-center ml-6">
+        <div className="bg-blue-500 text-white rounded-full w-6 h-6">
+          <div className="text-white text-md font-normal">{initials}</div>
+        </div>
       </div>
+      <img
+        src="/images/options/dots.png"
+        alt="options"
+        className="h-4 w-4 rotate-90 m-2.5 opacity-60"
+      />
     </div>
-    <div className="w-[48vw] my-1.5 rounded-xl bg-neutral-700 relative">
-      <div className="opacity-50 text-left pl-3 flex items-center h-full">
-        <span className="material-symbols-outlined text-[20px] pr-3">
-          search
-        </span>
-        Search Google or type a URL
-      </div>
-      <div className="absolute right-2 top-0 text-lg opacity-80 material-symbols-outlined">
-        star
-      </div>
-    </div>
-    <div className="avatar placeholder flex justify-center items-center ml-6">
-      <div className="bg-blue-500 text-white rounded-full w-6 h-6">
-        {name && (
-          <div className="text-white text-md font-normal">
-            {generateInitials(name)}
-          </div>
-        )}
-      </div>
-    </div>
-    <img
-      src="/images/options/dots.png"
-      alt="options"
-      className="h-4 w-4 rotate-90 m-2.5 opacity-60"
-    />
-  </div>
-);
+  );
+};
 
 const TabBar = () => (
   <div className="absolute bg-neutral-800 top-[6.5px] h-[2em] left-[6px] w-60 rounded-t-lg flex">
@@ -89,14 +85,13 @@ const TabBar = () => (
 
 function Browser({ isAppOpen, toggleBrowser, bounds }) {
   const homeUrl = "https://www.google.com/webhp?igu=1";
-  const { name } = useParams();
+  // const { name } = useParams();
 
   const handleCloseBrowser = useCallback(() => {
     toggleBrowser();
   }, [toggleBrowser]);
 
   if (!isAppOpen) return null;
-
 
   return (
     <DndContext>
@@ -105,10 +100,15 @@ function Browser({ isAppOpen, toggleBrowser, bounds }) {
           <TitleBar toggleBrowser={handleCloseBrowser} />
           <div className="content text-white select-none text-center">
             <TabBar />
-            <AddressBar name={name} />
+            <AddressBar />
             <div className="h-[50em]">
               <div className="h-full w-full flex flex-col flex-grow">
-                <iframe src={homeUrl} className="flex-grow" id="chrome-screen" title="Chrome Url"></iframe>
+                <iframe
+                  src={homeUrl}
+                  className="flex-grow"
+                  id="chrome-screen"
+                  title="Chrome Url"
+                ></iframe>
               </div>
             </div>
           </div>
@@ -116,7 +116,6 @@ function Browser({ isAppOpen, toggleBrowser, bounds }) {
       </DraggableWindow>
     </DndContext>
   );
-
 }
 
 export default Browser;

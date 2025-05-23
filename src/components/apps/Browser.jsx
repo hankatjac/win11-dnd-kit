@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import  { useCallback } from "react";
 import { DndContext } from "@dnd-kit/core";
 import { useInitials } from "../user/UserProfile";
 import RightClick from "../utilities/RightClick";
@@ -12,7 +12,10 @@ const TitleBar = ({ toggleBrowser }) => (
       </div>
       <div
         className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
-        onClick={toggleBrowser}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleBrowser();
+        }}
       >
         minimize
       </div>
@@ -21,7 +24,10 @@ const TitleBar = ({ toggleBrowser }) => (
       </div>
       <div
         className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
-        onClick={toggleBrowser}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleBrowser();
+        }}
       >
         close
       </div>
